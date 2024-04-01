@@ -12,7 +12,7 @@ package it.uniroma3.diadia;
 
 public class Partita {
 
-	static final private int CFU_INIZIALI = 20;
+	static final private int CFU_INIZIALI = 5;
 
 	private Stanza stanzaCorrente;
 	private Stanza stanzaVincente;
@@ -89,22 +89,16 @@ public class Partita {
 	 * @return vero se partita finita
 	 */
 	public boolean isFinita() {
-		return finita || vinta() || (cfu == 0);
+		return (cfu == 0);
 	}
 
-	/**
-	 * Imposta la partita come finita
-	 *
-	 */
-	public void setFinita() {
-		this.finita = true;
-	}
+
 
 	public int getCfu() {
 		return this.cfu;
 	}
 
-	public void setCfu(int cfu) {
-		this.cfu = cfu;		
+	public void setCfu(int diminutoreCfu) {
+		this.cfu += diminutoreCfu;		
 	}	
 }
