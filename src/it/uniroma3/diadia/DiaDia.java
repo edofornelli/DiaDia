@@ -69,6 +69,7 @@ public class DiaDia {
 			return true;
 		} else if (partita.isFinita()) {
 			System.out.println("Hai perso! avresti dovuto studiare invece di giocare con gli attrezzi...");
+			return true;
 		}		
 			return false;
 	}   
