@@ -16,12 +16,10 @@ public class Partita {
 
 	private Stanza stanzaCorrente;
 	private Stanza stanzaVincente;
-	private boolean finita;
 	private int cfu;
 	
 	public Partita(){
 		creaStanze();
-		this.finita = false;
 		this.cfu = CFU_INIZIALI;
 	}
 
