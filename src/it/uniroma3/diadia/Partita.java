@@ -16,10 +16,10 @@ public class Partita {
 
 	private boolean finita;
 	private int cfu;
-	Labirinto labirinto;
+	private Labirinto labirinto;
 	
 	public Partita(){
-		Labirinto labirinto = new Labirinto(this);
+		this.labirinto = new Labirinto();
 		this.finita = false;
 		this.cfu = CFU_INIZIALI;
 	}
@@ -54,5 +54,13 @@ public class Partita {
 
 	public void setCfu(int cfu) {
 		this.cfu = cfu;		
+	}
+
+	public Labirinto getLabirinto() {
+		return labirinto;
+	}
+
+	public void setLabirinto(Labirinto labirinto) {
+		this.labirinto = labirinto;
 	}	
 }

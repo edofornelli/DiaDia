@@ -1,13 +1,11 @@
 package it.uniroma3.diadia;
 
 public class Labirinto {
-	Partita partita;
 	private Stanza stanzaCorrente;
 	private Stanza stanzaVincente;
 
 
-	public Labirinto (Partita partita){
-		this.partita = partita;
+	public Labirinto (){
 		this.init();
 	}
 
