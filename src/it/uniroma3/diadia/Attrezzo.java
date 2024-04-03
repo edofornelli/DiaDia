@@ -25,8 +25,7 @@ public class Attrezzo {
 		this.nome = nome;
 	}
 
-	//prova per github a ritroso dopo aver spostato in workspace corretto
-	
+
 	/**
 	 * Restituisce il nome identificatore dell'attrezzo
 	 * @return il nome identificatore dell'attrezzo

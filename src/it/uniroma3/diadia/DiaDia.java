@@ -67,7 +67,10 @@ public class DiaDia {
 		if (this.partita.vinta()) {
 			System.out.println("Hai vinto!");
 			return true;
-		} else
+		} else if (partita.isFinita()) {
+			System.out.println("Hai perso! avresti dovuto studiare invece di giocare con gli attrezzi...");
+			return true;
+		}		
 			return false;
 	}   
 
@@ -95,8 +98,7 @@ public class DiaDia {
 			System.out.println("Direzione inesistente");
 		else {
 			this.partita.setStanzaCorrente(prossimaStanza);
-			int cfu = this.partita.getCfu();
-			this.partita.setCfu(cfu--);
+			this.partita.setCfu(-1);
 		}
 		System.out.println(partita.getStanzaCorrente().getDescrizione());
 	}
