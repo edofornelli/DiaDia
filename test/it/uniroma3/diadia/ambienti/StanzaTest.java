@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class LabirintoTest {
+public class StanzaTest {
 
 	@Test
 	public void test() {
 		assertTrue(true);;
 	}
-	
+
 }
