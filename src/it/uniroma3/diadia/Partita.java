@@ -2,6 +2,7 @@ package it.uniroma3.diadia;
 
 import it.uniroma3.diadia.ambienti.Labirinto;
 import it.uniroma3.diadia.ambienti.Stanza;
+import it.uniroma3.diadia.giocatore.Giocatore;
 
 /**
  * Questa classe modella una partita del gioco
@@ -12,18 +13,17 @@ import it.uniroma3.diadia.ambienti.Stanza;
  */
 
 public class Partita {
-
-	static final private int CFU_INIZIALI = 20;
-
-
+	private Stanza stanzaCorrente;
 	private boolean finita;
-	private int cfu;
 	private Labirinto labirinto;
+	private Giocatore giocatore;
+
 	
 	public Partita(){
 		this.labirinto = new Labirinto();
 		this.finita = false;
-		this.cfu = CFU_INIZIALI;
+		this.giocatore = new Giocatore ();
+		this.stanzaCorrente = labirinto.getStanzaIniziale();
 	}
 	
 	/**
@@ -31,7 +31,7 @@ public class Partita {
 	 * @return vero se partita vinta
 	 */
 	public boolean vinta() {
-		return labirinto.getStanzaCorrente() == labirinto.getStanzaVincente();
+		return this.stanzaCorrente == labirinto.getStanzaVincente();
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class Partita {
 	 * @return vero se partita finita
 	 */
 	public boolean isFinita() {
-		return finita || vinta() || (cfu == 0);
+		return finita || vinta() || (this.giocatore.getCfu() == 0);
 	}
 
 	/**
@@ -50,13 +50,6 @@ public class Partita {
 		this.finita = true;
 	}
 
-	public int getCfu() {
-		return this.cfu;
-	}
-
-	public void setCfu(int cfu) {
-		this.cfu = cfu;		
-	}
 
 	public Labirinto getLabirinto() {
 		return labirinto;
@@ -64,5 +57,22 @@ public class Partita {
 
 	public void setLabirinto(Labirinto labirinto) {
 		this.labirinto = labirinto;
+	}
+
+	public Giocatore getGiocatore() {
+		return giocatore;
+	}
+
+	public void setGiocatore(Giocatore giocatore) {
+		this.giocatore = giocatore;
 	}	
+
+	public void setStanzaCorrente(Stanza stanzaCorrente) {
+		this.stanzaCorrente = stanzaCorrente;
+	}
+
+	public Stanza getStanzaCorrente() {
+		return this.stanzaCorrente;
+	}
 }
+

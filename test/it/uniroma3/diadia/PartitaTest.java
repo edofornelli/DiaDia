@@ -1,14 +1,14 @@
-package it.uniroma3.diadia.ambienti;
+package it.uniroma3.diadia;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class LabirintoTest {
+public class PartitaTest {
 
 	@Test
 	public void test() {
-		assertTrue(true);;
+		fail("Not yet implemented");
 	}
-	
+
 }
