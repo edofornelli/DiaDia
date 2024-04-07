@@ -33,20 +33,20 @@ public class DiaDia {
 	static final private String[] elencoComandi = {"1) vai: comando che ti permette di muoverti nelle varie stanze", "   2) aiuto: ti elenca i comandi disponibili", "   3) fine: concludi la partita", "   4) prendi: raccogli attrezzo da stanza e lo metti in borsa", "   5) posa: posi attrezzo da borsa e lo metti in stanza"};
 
 	private Partita partita;
+	public IOConsole ioConsole;
 
 	public DiaDia() {
 		this.partita = new Partita();
+		this.ioConsole = new IOConsole ();
 
 	}
 
 	public void gioca() {
 		String istruzione; 
-		Scanner scannerDiLinee;
 
-		System.out.println(MESSAGGIO_BENVENUTO);
-		scannerDiLinee = new Scanner(System.in);		
+		ioConsole.mostraMessaggio(MESSAGGIO_BENVENUTO);		
 		do		
-			istruzione = scannerDiLinee.nextLine();
+			istruzione = ioConsole.leggiRiga();
 		while (!processaIstruzione(istruzione));
 	}   
 
@@ -71,12 +71,12 @@ public class DiaDia {
 		else if (comandoDaEseguire.getNome().equals("posa"))
 			this.posa(comandoDaEseguire.getParametro());
 		else
-			System.out.println("Comando sconosciuto");
+			ioConsole.mostraMessaggio("Comando Sconosciuto");
 		if (this.partita.vinta()) {
-			System.out.println("Hai vinto!");
+			ioConsole.mostraMessaggio("Hai vinto!");
 			return true;
 		} else if (partita.isFinita()) {
-			System.out.println("Hai perso! avresti dovuto studiare invece di giocare con gli attrezzi...");
+			ioConsole.mostraMessaggio("Hai perso! avresti dovuto studiare invece di giocare con gli attrezzi...");
 			return true;
 		}		
 		return false;
@@ -119,8 +119,8 @@ public class DiaDia {
 	 */
 	private void aiuto() {
 		for(int i=0; i< elencoComandi.length; i++) 
-			System.out.print(elencoComandi[i]+" ");
-		System.out.println();
+			ioConsole.mostraMessaggio(elencoComandi[i]+" ");
+		ioConsole.mostraMessaggio("");
 	}
 
 	/**
@@ -129,23 +129,23 @@ public class DiaDia {
 	 */
 	private void vai(String direzione) {
 		if(direzione==null)
-			System.out.println("Dove vuoi andare ?");
+			ioConsole.mostraMessaggio("Dove vuoi andare ?");
 		Stanza prossimaStanza = null;
 		prossimaStanza = this.partita.getStanzaCorrente().getStanzaAdiacente(direzione);
 		if (prossimaStanza == null)
-			System.out.println("Direzione inesistente");
+			ioConsole.mostraMessaggio("Direzione inesistente");
 		else {
 			this.partita.setStanzaCorrente(prossimaStanza);
 			this.partita.getGiocatore().setCfu(-1);
 		}
-		System.out.println(partita.getStanzaCorrente().getDescrizione());
+		ioConsole.mostraMessaggio(partita.getStanzaCorrente().getDescrizione());
 	}
 
 	/**
 	 * Comando "Fine".
 	 */
 	private void fine() {
-		System.out.println("Grazie di aver giocato!");  // si desidera smettere
+		ioConsole.mostraMessaggio("Grazie di aver giocato!");  // si desidera smettere
 	}
 
 	public static void main(String[] argc) {
