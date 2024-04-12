@@ -1,8 +1,6 @@
 package it.uniroma3.diadia;
 
 
-import java.util.Scanner;
-
 import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
@@ -30,7 +28,7 @@ public class DiaDia {
 			"o regalarli se pensi che possano ingraziarti qualcuno.\n\n"+
 			"Per conoscere le istruzioni usa il comando 'aiuto'.";
 
-	static final private String[] elencoComandi = {"1) vai: comando che ti permette di muoverti nelle varie stanze", "   2) aiuto: ti elenca i comandi disponibili", "   3) fine: concludi la partita", "   4) prendi: raccogli attrezzo da stanza e lo metti in borsa", "   5) posa: posi attrezzo da borsa e lo metti in stanza"};
+	static final private String[] elencoComandi = {"1) vai: comando che ti permette di muoverti nelle varie stanze", "2) aiuto: ti elenca i comandi disponibili", "3) fine: concludi la partita", "4) prendi: raccogli attrezzo da stanza e lo metti in borsa", "5) posa: posi attrezzo da borsa e lo metti in stanza",   "6) guarda: guardati intorno nella stanza attuale"};
 
 	private Partita partita;
 	public IOConsole ioConsole;
@@ -58,8 +56,11 @@ public class DiaDia {
 	 */
 	private boolean processaIstruzione(String istruzione) {
 		Comando comandoDaEseguire = new Comando(istruzione);
-
-		if (comandoDaEseguire.getNome().equals("fine")) {
+		
+		if (istruzione.isEmpty()) {
+			ioConsole.mostraMessaggio("Metticelo un comando però sveglione...");
+		}
+		else if (comandoDaEseguire.getNome().equals("fine")) {
 			this.fine(); 
 			return true;
 		} else if (comandoDaEseguire.getNome().equals("vai"))
@@ -70,6 +71,8 @@ public class DiaDia {
 			this.prendi(comandoDaEseguire.getParametro());
 		else if (comandoDaEseguire.getNome().equals("posa"))
 			this.posa(comandoDaEseguire.getParametro());
+		else if (comandoDaEseguire.getNome().equals("guarda"))
+			this.guarda();
 		else
 			ioConsole.mostraMessaggio("Comando Sconosciuto");
 		if (this.partita.vinta()) {
@@ -83,6 +86,10 @@ public class DiaDia {
 	}   
 
 	// implementazione del comando posa:
+
+	private void guarda() {
+		ioConsole.mostraMessaggio(partita.getStanzaCorrente().getDescrizione());
+	}
 
 	private void posa(String nomeAttrezzo) {
 		if (this.partita.getGiocatore().getBorsa().hasAttrezzo(nomeAttrezzo)) {
