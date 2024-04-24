@@ -14,10 +14,13 @@ public class PartitaTest {
 	private Partita partita;
 	private Giocatore giocatore;
 	private Stanza stanzaCorrente;
+	public IOConsole ioConsole;
+
 	
 	@BeforeEach
 	public void setUp () {
-		this.partita = new Partita();
+		IO io = new IOConsole();
+		this.partita = new Partita((IOConsole) io);
 		this.giocatore = new Giocatore ();
 		this.stanzaCorrente = new Stanza("sala giochi");
 		

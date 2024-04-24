@@ -11,17 +11,17 @@ public class ComandoVai implements Comando{
 		Stanza stanzaCorrente = partita.getStanzaCorrente();
 		Stanza prossimaStanza = null;
 		if (this.direzione == null) {
-			System.out.println("Dove vuoi andare? Devi specificare una direzione.");
+			partita.getIoConsole().mostraMessaggio("Dove vuoi andare? Devi specificare una direzione.");
 			return;
 		}
 		prossimaStanza = stanzaCorrente.getStanzaAdiacente(this.direzione);
 		if (prossimaStanza == null) {
-			System.out.println("Direzione inesistente");
+			partita.getIoConsole().mostraMessaggio("Direzione inesistente");
 			return;
 		}
 		
 		partita.setStanzaCorrente(prossimaStanza);
-		System.out.println (partita.getStanzaCorrente().getDescrizione());
+		partita.getIoConsole().mostraMessaggio(partita.getStanzaCorrente().getDescrizione());
 		partita.getGiocatore().setCfu(-1);
 	}
 	
