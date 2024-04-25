@@ -15,4 +15,14 @@ public class ComandoFine implements Comando {
 		return;
 	}
 
+	@Override
+	public String getNome() {
+		return "comandoFine";
+	}
+
+	@Override
+	public String getParametro() {
+		return null;
+	}
+
 }
