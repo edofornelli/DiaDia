@@ -31,12 +31,13 @@ public class DiaDia {
 
 
 	private Partita partita;
-	public IOConsole ioConsole;
+	public IO ioConsole;
 
-	public DiaDia(IOConsole io) {
-		this.ioConsole = io;
+	public DiaDia(IO io) {
+		this.ioConsole =  io;
 		this.partita = new Partita(ioConsole);
 	}
+	
 
 	public void gioca() {
 		String istruzione; 
@@ -69,5 +70,15 @@ public class DiaDia {
 		IO io = new IOConsole();
 		DiaDia gioco = new DiaDia((IOConsole) io);
 		gioco.gioca();
+	}
+
+
+	public Partita getPartita() {
+		return partita;
+	}
+
+
+	public void setPartita(Partita partita) {
+		this.partita = partita;
 	}
 }
