@@ -28,6 +28,15 @@ class StanzaMagica extends Stanza {
 		return super.addAttrezzo(attrezzo);
 	}
 	
+	/* non sono sicuro serva, riguardare le slide HW2
+	@Override
+	public boolean removeAttrezzo (Attrezzo attrezzo) {
+		if (this.contatoreAttrezziPosati > 0) {
+			this.contatoreAttrezziPosati--;
+		}
+		return super.removeAttrezzo(attrezzo);
+	} */
+	
 	
 	private Attrezzo modificaAttrezzo(Attrezzo attrezzo) {
 		StringBuilder nomeInvertito;
