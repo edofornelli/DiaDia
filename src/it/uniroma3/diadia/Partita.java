@@ -21,8 +21,8 @@ public class Partita {
 
 
 	
-	public Partita(IO ioConsole){
-		this.labirinto = new Labirinto();
+	public Partita(IO ioConsole , Labirinto labirinto){
+		this.labirinto = labirinto;
 		this.finita = false;
 		this.giocatore = new Giocatore ();
 		this.stanzaCorrente = labirinto.getStanzaIniziale();

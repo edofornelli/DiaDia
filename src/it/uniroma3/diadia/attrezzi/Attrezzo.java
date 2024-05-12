@@ -1,5 +1,7 @@
 package it.uniroma3.diadia.attrezzi;
 
+import java.util.Comparator;
+
 import it.uniroma3.diadia.ambienti.Stanza;
 
 /**
@@ -12,10 +14,10 @@ import it.uniroma3.diadia.ambienti.Stanza;
  * @see Stanza
  * @version base
  */
-public class Attrezzo  {
+public class Attrezzo {
 
 	private String nome;
-	private int peso;
+	private Integer peso;
 
 	/**
 	 * Crea un attrezzo
@@ -40,7 +42,7 @@ public class Attrezzo  {
 	 * Restituisce il peso dell'attrezzo
 	 * @return il peso dell'attrezzo
 	 */
-	public int getPeso() {
+	public Integer getPeso() {
 		return this.peso;
 	}
 
@@ -51,6 +53,37 @@ public class Attrezzo  {
 	public String toString() {
 		return this.getNome()+" ("+this.getPeso()+"kg)";
 	}
+	
+	
+    // External comparator for comparing based on weight
+    public static Comparator<Attrezzo> ComparatorePesiAttrezzo = new Comparator<Attrezzo>() {
+        @Override
+        public int compare(Attrezzo a1, Attrezzo a2) {
+            return a1.getPeso().compareTo(a2.getPeso());
+        }
+    };
+
+    // New comparator for comparing based on name
+    public static Comparator<Attrezzo> ComparatoreNomiAttrezzi = new Comparator<Attrezzo>() {
+        @Override
+        public int compare(Attrezzo a1, Attrezzo a2) {
+            return a1.getNome().compareTo(a2.getNome());
+        }
+    };
+	
+    public static Comparator<Attrezzo> ComparatoreNomiEPesoAttrezzi = new Comparator<Attrezzo>() {
+        
+    	@Override
+        public int compare(Attrezzo a1, Attrezzo a2) {
+            if (a1.getPeso().equals(a2.getPeso())) {
+            		return a1.getNome().compareTo(a2.getNome());
+            }
+            else {
+            	return a1.getPeso().compareTo(a2.getPeso());
+            }
+        }
+    };
+	
 	
 	@Override
 	public int hashCode() {

@@ -10,11 +10,16 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import it.uniroma3.diadia.giocatore.Borsa;
+
 public class AttrezzoTest {
 	public Attrezzo attrezzo1;
 	public Attrezzo attrezzo2;	
 	public Attrezzo attrezzo3;
+	public Attrezzo attrezzo4;
+	public Attrezzo attrezzo5;
 	public Set<Attrezzo> attrezzi;
+	public Borsa borsa;
 	
 
 
@@ -23,8 +28,11 @@ public class AttrezzoTest {
 		this.attrezzo1 = new Attrezzo("spada", 1);
 		this.attrezzo2 = new Attrezzo("spada", 2);
 		this.attrezzo3 = new Attrezzo("spada", 2);
-		this.attrezzi = new HashSet <Attrezzo> ();
+		this.attrezzo4 = new Attrezzo("mazza", 4);
+		this.attrezzo5 = new Attrezzo("penna", 3);
 		
+		this.attrezzi = new HashSet <Attrezzo> ();
+		this.borsa = new Borsa();
 	}
 		
 	@Test
@@ -44,5 +52,7 @@ public class AttrezzoTest {
 		assertFalse(this.attrezzi.add(attrezzo3));
 		assertEquals(this.attrezzi.size(), 1);
 	}
+	
+
 
 }

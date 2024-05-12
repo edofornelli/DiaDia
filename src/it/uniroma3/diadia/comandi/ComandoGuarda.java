@@ -7,6 +7,7 @@ public class ComandoGuarda implements Comando {
 	@Override
 	public void esegui(Partita partita) {
 		partita.getIoConsole().mostraMessaggio(partita.getStanzaCorrente().getDescrizione());
+		partita.getIoConsole().mostraMessaggio(partita.getGiocatore().getBorsa().toString());
 
 	}
 
