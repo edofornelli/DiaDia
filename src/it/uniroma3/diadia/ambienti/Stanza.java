@@ -70,6 +70,10 @@ public class Stanza {
 		return this.toString();
 	}
 
+	public Map<String,Stanza> getMapStanzeAdiacenti(){
+		return this.stanzeAdiacenti;
+	}
+	
 	/**
 	 * Restituisce la collezione di attrezzi presenti nella stanza.
 	 * @return la collezione di attrezzi nella stanza.
@@ -165,6 +169,17 @@ public class Stanza {
 		Set<String> listaDirezioni = new HashSet <String>();
 		listaDirezioni = this.stanzeAdiacenti.keySet();
 		return listaDirezioni;
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getNome().hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		Stanza that = (Stanza) o;
+		return this.getNome().equals(that.getNome());
 	}
 
 }

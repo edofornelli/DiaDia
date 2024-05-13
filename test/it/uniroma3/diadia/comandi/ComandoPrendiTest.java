@@ -10,11 +10,15 @@ import org.junit.jupiter.api.Test;
 
 import it.uniroma3.diadia.DiaDia;
 import it.uniroma3.diadia.IOSimulator;
+import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 
 public class ComandoPrendiTest {
 	public DiaDia diadia;
 	public IOSimulator ioSimulator;
 	public List <String> lista;
+	Labirinto labirinto = new Labirinto ("completo");
+	
 
 	@BeforeEach
 	public void setUp() {
@@ -22,8 +26,32 @@ public class ComandoPrendiTest {
 		lista.add("prendi osso");
 		lista.add("fine");
 		this.ioSimulator = new IOSimulator(lista);
-		this.diadia = new DiaDia(ioSimulator);
+		labirinto = new LabirintoBuilder(labirinto)
+				.addStanzaIniziale("Atrio")
+				.aggiungiECreaStanza("AulaN11")
+				.aggiungiECreaStanza("AulaN10")
+				.aggiungiECreaStanza("Laboratorio")
+				.addStanzaVincente("Biblioteca")
+				.addAdiacenza("Atrio","Biblioteca","nord")
+				.addAdiacenza("Atrio","Laboratorio","ovest")
+				.addAdiacenza("Atrio","AulaN11","est")
+				.addAdiacenza("Atrio","AulaN10","sud")
+				.addAdiacenza("Biblioteca","Atrio","sud")
+				.addAdiacenza("Laboratorio","Atrio","est")
+				.addAdiacenza("Laboratorio","AulaN11","ovest")
+				.addAdiacenza("AulaN11","Atrio","ovest")
+				.addAdiacenza("AulaN11","Laboratorio","est")
+				.addAdiacenza("AulaN10","Atrio","nord")
+				.addAdiacenza("AulaN10","AulaN11","est")
+				.addAdiacenza("AulaN10","Laboratorio","ovest")
+				.addECreaAttrezzo("lanterna",3,"AulaN10")
+				.addECreaAttrezzo("osso",1,"Atrio")
+				.addECreaAttrezzo("spada",5,"AulaN11")
+				.addECreaAttrezzo("chiave",1,"Atrio")
+				.getLabirinto();
+		this.diadia = new DiaDia(ioSimulator, this.labirinto);
 		diadia.gioca();
+
 	}
 
 	@Test
