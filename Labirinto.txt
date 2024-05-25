@@ -1,0 +1,9 @@
+Stanze: Atrio, Portineria, Biblioteca, Aula_N10, Aula_N11, Corridoio_Sud, Corridoio_Ovest, Corridoio_Est
+Stanze Bloccate: Corridoio_Nord nord chiave
+Stanze Buie: Bagno lanterna, Bagno1 lanterna
+Stanze Magiche: Stanza_delle_Necessità
+Inizio: Atrio
+Vincente: Biblioteca
+Attrezzi: lanterna 1 Atrio, libro 2 Portineria, spada 1 Corridoio_Est
+Uscite: Atrio nord Corridoio_Sud, Corridoio_Sud sud Atrio ,Corridoio_Sud nord Portineria, Portineria nord Corridoio_Nord, Corridoio_Nord nord Biblioteca, Portineria ovest Corridoio_Ovest, Corridoio_Ovest est Portineria ,Portineria est Corridoio_Est, Corridoio_Est ovest Portineria ,Portineria sud Corridoio_Sud, Corridoio_Est est Bagno, Bagno ovest Corridoio_Est, Corridoio_Est sud Bagno1, Bagno1 nord Corridoio_Est, Corridoio_Est nord Stanza_delle_Necessità, Stanza_delle_Necessità sud Corridoio_Est, Corridoio_Nord sud Portineria
+Personaggi: Mago Corridoio_Sud Merlino #Sono un mago birichino# bistecca 1, Cane Corridoio_Nord Fido #Bau bau# chiave 1 bistecca, Strega Corridoio_Est Mara #Una strega malvagia#

@@ -1,45 +1,43 @@
 package it.uniroma3.diadia.comandi;
 
+import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
+import it.uniroma3.diadia.giocatore.Borsa;
+import it.uniroma3.diadia.personaggi.AbstractPersonaggio;
 
-public class ComandoRegala extends ComandoAstratto{
+public class ComandoRegala extends AbstractComando {
 
-	String attrezzo;
+	public ComandoRegala() {
+		super("regala",null);
+	}
 	
+	public ComandoRegala(String parametro) {
+		super("regala",parametro);
+	}
+
 	@Override
 	public void esegui(Partita partita) {
-		
-		if (partita.getStanzaCorrente().getPersonaggio()!=null) {
-			if (partita.getGiocatore().getBorsa().hasAttrezzo(this.attrezzo)) {
-				Attrezzo a = partita.getGiocatore().getBorsa().removeAttrezzo(this.attrezzo);
-				partita.getGiocatore().getBorsa().removeAttrezzo(attrezzo);
-				partita.getStanzaCorrente().getPersonaggio().riceviRegalo(a, partita);
+		Attrezzo attrezzoDaRegalare = null;
+		IO io = partita.getIO();
+		AbstractPersonaggio personaggio = partita.getGiocatore().getStanzaCorrente().getPersonaggio();
+		if(personaggio != null) {
+			if(this.getParametro() == null || this.getParametro().equals("")) {
+				io.mostraMessaggio("Ma cosa voglio regalare?");
+			}else {
+				Borsa borsa = partita.getGiocatore().getBorsa();
+				attrezzoDaRegalare = borsa.getAttrezzo(this.getParametro());
+				if(attrezzoDaRegalare == null)
+					io.mostraMessaggio("Non ho questo attrezzo in borsa...");
+				else {
+					borsa.removeAttrezzo(attrezzoDaRegalare.getNome());
+					io.mostraMessaggio("*regalo "+attrezzoDaRegalare.toString()+" a "+personaggio.toString()+" *");
+					io.mostraMessaggio(personaggio.riceviRegalo(attrezzoDaRegalare, partita));
+				}
 			}
-			else {
-				partita.ioConsole.mostraMessaggio("non hai questo attrezzo");
-			}
-		} else {
-			partita.ioConsole.mostraMessaggio("non c'è nessuno a cui regalare questo attrezzo");
+		}else {
+			io.mostraMessaggio("Non c'e' nessuno a cui possa regalare qualcosa in questa stanza...");
 		}
-		
-	}
-
-	@Override
-	public void setParametro(String parametro) {
-		this.attrezzo = parametro;
-	}
-	
-	@Override
-	public String getNome() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getParametro() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -1,62 +1,66 @@
 package it.uniroma3.diadia.comandi;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import it.uniroma3.diadia.DiaDia;
-import it.uniroma3.diadia.IOSimulator;
+import it.uniroma3.diadia.IO;
+import it.uniroma3.diadia.IOConsole;
+import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
+import it.uniroma3.diadia.ambienti.Stanza;
+import it.uniroma3.diadia.attrezzi.Attrezzo;
+import it.uniroma3.diadia.giocatore.Giocatore;
 
 public class ComandoPosaTest {
-	public DiaDia diadia;
-	public IOSimulator ioSimulator;
-	public List <String> lista;
-	Labirinto labirinto = new Labirinto ("completo");
+	static final String NOME_ATTREZZO="attrezzo di test";
+	static final int PESO_ATTREZZO = 1;
+	static final String NOME_STANZA = "Stanza di test";
+	private IO io;
+	private Giocatore giocatoreTest;
+	private Partita partitaTest;
+	private Labirinto labirintoTest;
+	private Attrezzo attrezzoTest;
+	private Stanza stanzaDiTest;
+	private AbstractComando comandoPosa;
+	
+	@Before
+	public void setUp()  {
+		io = new IOConsole();
+		partitaTest = new Partita(io);
+		labirintoTest = new Labirinto();
+		attrezzoTest = new Attrezzo (NOME_ATTREZZO, PESO_ATTREZZO);
+		stanzaDiTest = new Stanza (NOME_STANZA);
+		giocatoreTest = new Giocatore(stanzaDiTest);
+		labirintoTest.setStanzaIniziale(stanzaDiTest);
+		partitaTest.setLabirinto(labirintoTest);
+		partitaTest.setGiocatore(giocatoreTest);
+	}
 
-	
-	
-	@BeforeEach
-	public void setUp() {
-		this.lista = new ArrayList<>();
-		lista.add("prendi osso");
-		lista.add("posa osso");
-		lista.add("fine");
-		this.ioSimulator = new IOSimulator(lista);
-		labirinto = new LabirintoBuilder(labirinto)
-				.addStanzaIniziale("Atrio")
-				.aggiungiECreaStanza("AulaN11")
-				.aggiungiECreaStanza("AulaN10")
-				.aggiungiECreaStanza("Laboratorio")
-				.addStanzaVincente("Biblioteca")
-				.addAdiacenza("Atrio","Biblioteca","nord")
-				.addAdiacenza("Atrio","Laboratorio","ovest")
-				.addAdiacenza("Atrio","AulaN11","est")
-				.addAdiacenza("Atrio","AulaN10","sud")
-				.addAdiacenza("Biblioteca","Atrio","sud")
-				.addAdiacenza("Laboratorio","Atrio","est")
-				.addAdiacenza("Laboratorio","AulaN11","ovest")
-				.addAdiacenza("AulaN11","Atrio","ovest")
-				.addAdiacenza("AulaN11","Laboratorio","est")
-				.addAdiacenza("AulaN10","Atrio","nord")
-				.addAdiacenza("AulaN10","AulaN11","est")
-				.addAdiacenza("AulaN10","Laboratorio","ovest")
-				.addECreaAttrezzo("lanterna",3,"AulaN10")
-				.addECreaAttrezzo("osso",1,"Atrio")
-				.addECreaAttrezzo("spada",5,"AulaN11")
-				.addECreaAttrezzo("chiave",1,"Atrio")
-				.getLabirinto();
-		this.diadia = new DiaDia(ioSimulator , labirinto);
-		diadia.gioca();
+	@Test
+	public void testPosaAttrezzoInBorsa() {
+		giocatoreTest.getBorsa().addAttrezzo(attrezzoTest);
+		comandoPosa = new ComandoPosa(NOME_ATTREZZO);
+		comandoPosa.esegui(partitaTest);
+		assertTrue(stanzaDiTest.hasAttrezzo(NOME_ATTREZZO));
+		assertFalse(giocatoreTest.getBorsa().hasAttrezzo(NOME_ATTREZZO));
 	}
 	
 	@Test
-	public void testVerificoDiAverPresoEPosatoOssoEDiNonAverloInBorsa () {
-		assertEquals(false , diadia.getPartita().getGiocatore().getBorsa().hasAttrezzo("osso"));
+	public void testPosaAttrezzoNonInBorsa() {
+		comandoPosa = new ComandoPosa(NOME_ATTREZZO);
+		comandoPosa.esegui(partitaTest);
+		assertFalse(stanzaDiTest.hasAttrezzo(NOME_ATTREZZO));
+		assertFalse(giocatoreTest.getBorsa().hasAttrezzo(NOME_ATTREZZO));
+	}
+	
+	@Test
+	public void testPosaAttrezzoNomeSbagliato() {
+		giocatoreTest.getBorsa().addAttrezzo(attrezzoTest);
+		comandoPosa = new ComandoPosa("nomeACaso");
+		comandoPosa.esegui(partitaTest);
+		assertFalse(stanzaDiTest.hasAttrezzo(NOME_ATTREZZO));
+		assertTrue(giocatoreTest.getBorsa().hasAttrezzo(NOME_ATTREZZO));
 	}
 }

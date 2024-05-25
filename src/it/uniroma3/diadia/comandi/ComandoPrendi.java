@@ -1,48 +1,40 @@
 package it.uniroma3.diadia.comandi;
 
+import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
-import it.uniroma3.diadia.attrezzi.Attrezzo;
+import it.uniroma3.diadia.ambienti.Stanza;
+import it.uniroma3.diadia.giocatore.Borsa;
 
-public class ComandoPrendi implements Comando {
+public class ComandoPrendi extends AbstractComando {
+//	private String nomeAttrezzo;
 
-	String attrezzo;
+	public ComandoPrendi() {
+		super("prendi",null);
+	}
 	
-	@Override
+	public ComandoPrendi(String nomeAttrezzo) {
+		super("prendi",nomeAttrezzo);
+	}
+
 	public void esegui(Partita partita) {
+		IO io = partita.getIO();
 
-		if (partita.getStanzaCorrente().hasAttrezzo(attrezzo)) {
-		
-		Attrezzo a = partita.getStanzaCorrente().getAttrezzo(attrezzo);
-		partita.getStanzaCorrente().removeAttrezzo(a);
-		
-		//rimosso attrezzo, ora controllo se c'Ã¨ spazio in borsa chiamando metodo add
-
-		boolean attrezzoAggiunto = partita.getGiocatore().getBorsa().addAttrezzo(a);
-		
-		//se verifico che non si poteva aggiungere alla borsa, lo riaggiungo alla stanza
-		
-		if (!attrezzoAggiunto) {
-			partita.getStanzaCorrente().addAttrezzo(a);
+		if(this.getParametro()==null) {
+			io.mostraMessaggio("Digitare il nome dell'attrezzo che vuoi prendere");
+			return;
+		}else{
+			Stanza stanzaCorrente=partita.getGiocatore().getStanzaCorrente();
+			Borsa borsaGiocatore=partita.getGiocatore().getBorsa();
+			if(stanzaCorrente.hasAttrezzo(this.getParametro())) {
+				if(borsaGiocatore.addAttrezzo(stanzaCorrente.getAttrezzo(this.getParametro()))){
+					io.mostraMessaggio("Hai preso "+this.getParametro());
+					stanzaCorrente.removeAttrezzo(this.getParametro());
+				}else{
+					io.mostraMessaggio("L'operazione non ha avuto successo. La borsa è piena");
+				}
+			}else{
+				io.mostraMessaggio("L'attrezzo non è presente nella stanza corrente");
+			}
 		}
-	}		
-
 	}
-
-	@Override
-	public void setParametro(String parametro) {
-		this.attrezzo = parametro;
-	}
-
-	@Override
-	public String getNome() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getParametro() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

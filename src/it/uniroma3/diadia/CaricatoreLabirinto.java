@@ -148,14 +148,17 @@ public class CaricatoreLabirinto {
 				check(this.nome2stanza.containsKey(nomeStanzaCollocazione),msgTerminazionePrecoce("Non esiste la stanza specificata dove collocare il personaggio"));
 				this.nome2stanza.get(nomeStanzaCollocazione).setPersonaggio(personaggio);
 				personaggio.setNome(nomePersonaggio);
+				personaggio.setPresentazione(presentazionePersonaggio);
 
 				if(classePersonaggio.equals(Mago.class)) {
 					Mago mago = (Mago) personaggio;
+					mago.setAttrezzoDaRegalare(new Attrezzo(nomeAttrezzoRegalato,pesoAttrezzoRegalato));
 				}
 
 				if(classePersonaggio.equals(Cane.class)) {
 					Cane cane = (Cane) personaggio;
 					cane.setAttrezzoDaRegalare(new Attrezzo(nomeAttrezzoRegalato,pesoAttrezzoRegalato));
+					cane.setNomeCiboAppetitoso(ciboGradito);
 				}
 
 
@@ -252,7 +255,7 @@ public class CaricatoreLabirinto {
 				scannerDiParole.close();
 				throw new FormatoFileNonValidoException("Dare un nome all'attrezzo illuminante");
 			}
-			this.nome2stanza.put(nomeStanza, new StanzaBuia(nomeStanza));
+			this.nome2stanza.put(nomeStanza, new StanzaBuia(nomeStanza,nomeAttrezzoIlluminante));
 		}
 		//CREA STANZE MAGICHE
 		List<String>listaElementiMagiche = separaStringheAlleVirgole(stanzeMagiche);

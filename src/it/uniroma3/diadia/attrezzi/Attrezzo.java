@@ -1,7 +1,5 @@
 package it.uniroma3.diadia.attrezzi;
 
-import java.util.Comparator;
-
 import it.uniroma3.diadia.ambienti.Stanza;
 
 /**
@@ -14,10 +12,10 @@ import it.uniroma3.diadia.ambienti.Stanza;
  * @see Stanza
  * @version base
  */
-public class Attrezzo {
+public class Attrezzo implements Comparable<Attrezzo>{
 
 	private String nome;
-	private Integer peso;
+	private int peso;
 
 	/**
 	 * Crea un attrezzo
@@ -28,7 +26,6 @@ public class Attrezzo {
 		this.peso = peso;
 		this.nome = nome;
 	}
-
 
 	/**
 	 * Restituisce il nome identificatore dell'attrezzo
@@ -42,7 +39,7 @@ public class Attrezzo {
 	 * Restituisce il peso dell'attrezzo
 	 * @return il peso dell'attrezzo
 	 */
-	public Integer getPeso() {
+	public int getPeso() {
 		return this.peso;
 	}
 
@@ -50,50 +47,31 @@ public class Attrezzo {
 	 * Restituisce una rappresentazione stringa di questo attrezzo
 	 * @return la rappresentazione stringa
 	 */
+	@Override
 	public String toString() {
 		return this.getNome()+" ("+this.getPeso()+"kg)";
 	}
 	
-	
-    // External comparator for comparing based on weight
-    public static Comparator<Attrezzo> ComparatorePesiAttrezzo = new Comparator<Attrezzo>() {
-        @Override
-        public int compare(Attrezzo a1, Attrezzo a2) {
-            return a1.getPeso().compareTo(a2.getPeso());
-        }
-    };
-
-    // New comparator for comparing based on name
-    public static Comparator<Attrezzo> ComparatoreNomiAttrezzi = new Comparator<Attrezzo>() {
-        @Override
-        public int compare(Attrezzo a1, Attrezzo a2) {
-            return a1.getNome().compareTo(a2.getNome());
-        }
-    };
-	
-    public static Comparator<Attrezzo> ComparatoreNomiEPesoAttrezzi = new Comparator<Attrezzo>() {
-        
-    	@Override
-        public int compare(Attrezzo a1, Attrezzo a2) {
-            if (a1.getPeso().equals(a2.getPeso())) {
-            		return a1.getNome().compareTo(a2.getNome());
-            }
-            else {
-            	return a1.getPeso().compareTo(a2.getPeso());
-            }
-        }
-    };
-	
+	//2 attrezzi sono uguali se il loro nome è uguale 
+	@Override
+	public boolean equals(Object o) {
+		Attrezzo that = (Attrezzo)o;
+		return this.getNome().equals(that.getNome());
+	}
 	
 	@Override
 	public int hashCode() {
-		return this.getPeso() + this.getNome().hashCode();
+		return this.getNome().hashCode();
 	}
 
+	// Ordinamento naturale
 	@Override
-	public boolean equals(Object o) {
-		Attrezzo that = (Attrezzo) o;
-		return this.getPeso() == that.getPeso() && this.getNome().equals(that.getNome());		
+	public int compareTo(Attrezzo that) {
+		int cmp = this.getPeso()-that.getPeso();
+		if(cmp==0)
+			cmp=this.getNome().compareTo(that.getNome());
+		return cmp;
 	}
-		
+	
+	
 }

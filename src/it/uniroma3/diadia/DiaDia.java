@@ -1,15 +1,15 @@
 package it.uniroma3.diadia;
 
+import it.uniroma3.diadia.comandi.FabbricaDiComandi;
+import it.uniroma3.diadia.comandi.FabbricaDiComandiRiflessiva;
+
+import java.io.FileNotFoundException;
 
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
-import it.uniroma3.diadia.comandi.Comando;
-import it.uniroma3.diadia.comandi.FabbricaDiComandi;
-import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
-
+import it.uniroma3.diadia.comandi.AbstractComando;
 /**
  * Classe principale di diadia, un semplice gioco di ruolo ambientato al dia.
- * Per giocare crea un'istanza di questa classe e invoca il metodo gioca
+ * Per giocare crea un'istanza di questa classe e invoca il letodo gioca
  *
  * Questa e' la classe principale crea e istanzia tutte le altre
  *
@@ -31,86 +31,77 @@ public class DiaDia {
 			"o regalarli se pensi che possano ingraziarti qualcuno.\n\n"+
 			"Per conoscere le istruzioni usa il comando 'aiuto'.";
 
-
 	private Partita partita;
-	public IO ioConsole;
+	private IO io;
 
-	public DiaDia(IO io, Labirinto labirinto) {
-		this.ioConsole =  io;
-		this.partita = new Partita(ioConsole , labirinto);
+	public DiaDia(IO io) {
+		this.partita = new Partita(io);
+		this.io = io;
 	}
 	
-
-	public void gioca() {
+	public DiaDia(IO io, Labirinto maze) {
+		this.partita = new Partita(io,maze);
+		this.io = io;
+	}
+	/**
+	 * Principale loop di gioco
+	 */
+	public void gioca()  {
 		String istruzione; 
-		ioConsole.mostraMessaggio(MESSAGGIO_BENVENUTO);		
-		do		
-			istruzione = ioConsole.leggiRiga();
-		while (!processaIstruzione(istruzione));
+		//io.mostraMessaggio("Come ti chiami: ");
+		//partita.getGiocatore().setNome(io.leggiRiga());		
+		io.mostraMessaggio("Benvenuto "+partita.getGiocatore().getNome()+".\n"+ MESSAGGIO_BENVENUTO);
+		do {
+			istruzione = io.leggiRiga();
+		}while(!processaIstruzione(istruzione));
 	}   
-
 
 	/**
 	 * Processa una istruzione 
-	 *
 	 * @return true se l'istruzione e' eseguita e il gioco continua, false altrimenti
-	 * @throws Exception 
 	 */
+
 	private boolean processaIstruzione(String istruzione) {
-		Comando comandoDaEseguire;
-		FabbricaDiComandi factory = new FabbricaDiComandiFisarmonica();
-				comandoDaEseguire = factory.costruisciComando(istruzione, ioConsole);
-		comandoDaEseguire.esegui(this.partita);
-		if (this.partita.vinta())
-			this.ioConsole.mostraMessaggio("Hai Vinto");
-		if (!(this.partita.getGiocatore().getCfu()>=0))
-			this.ioConsole.mostraMessaggio("Hai esaurito i CFU...");
-		return this.partita.isFinita();
+		FabbricaDiComandi fabbricaDiComandi= new FabbricaDiComandiRiflessiva();
+		AbstractComando comandoDaEseguire = fabbricaDiComandi.costruisciComando(istruzione);
+		comandoDaEseguire.esegui(partita);
+		if(this.partita.getStatoPartita()) {
+			if(!this.partita.getGiocatore().isVivo()) {
+				io.mostraMessaggio("Sei morto");
+				return true;
+			}else if (this.vinta()) {
+				io.mostraMessaggio("Hai vinto!");
+				return true;
+			}else
+				return false;
+		}else{
+			return true;
+		}
+	}   
+
+	/*
+	 * Metodo che controlla che la stanza del player � la stanza vincente
+	 */
+
+	private boolean vinta() {
+		return this.partita.getGiocatore().getStanzaCorrente()==this.partita.getLabirinto().getStanzaVincente();
 	}
-
-
-	public static void main(String[] argc) {
-		IO io = new IOConsole();
-		
-		Labirinto labirinto = new Labirinto ("completo");
-		labirinto = new LabirintoBuilder(labirinto)
-				.addStanzaIniziale("Atrio")
-				.aggiungiECreaStanza("AulaN11")
-				.aggiungiECreaStanza("AulaN10")
-				.aggiungiECreaStanza("Laboratorio")
-				.aggiungiECreaStanzaBloccata("Scannatoio","chiave", "nord")
-				.addStanzaVincente("Biblioteca")
-				.addAdiacenza("Atrio","Biblioteca","nord")
-				.addAdiacenza("Atrio","Laboratorio","ovest")
-				.addAdiacenza("Atrio","AulaN11","est")
-				.addAdiacenza("Atrio","AulaN10","sud")
-				.addAdiacenza("Biblioteca","Atrio","sud")
-				.addAdiacenza("Laboratorio","Atrio","est")
-				.addAdiacenza("Laboratorio","AulaN11","ovest")
-				.addAdiacenza("AulaN11","Atrio","ovest")
-				.addAdiacenza("AulaN11","Laboratorio","est")
-				.addAdiacenza("AulaN11","Scannatoio","sud")
-				.addAdiacenza("Scannatoio","AulaN11","nord")
-				.addAdiacenza("AulaN10","Atrio","nord")
-				.addAdiacenza("AulaN10","AulaN11","est")
-				.addAdiacenza("AulaN10","Laboratorio","ovest")
-				.addECreaAttrezzo("lanterna",3,"AulaN10")
-				.addECreaAttrezzo("osso",1,"Atrio")
-				.addECreaAttrezzo("spada",5,"AulaN11")
-				.addECreaAttrezzo("chiave",1,"Atrio")
-				.getLabirinto();
-		
-		DiaDia gioco = new DiaDia((IOConsole) io, labirinto);
-		gioco.gioca();
-	}
-
-
+	
 	public Partita getPartita() {
 		return partita;
 	}
-
-
-	public void setPartita(Partita partita) {
-		this.partita = partita;
+	
+	public static void main(String[] argc) {
+		try {
+		IO io = new IOConsole();
+		CaricatoreLabirinto caricatore = new CaricatoreLabirinto("Labirinto.txt");
+		Labirinto labirinto = caricatore.carica();
+		DiaDia gioco = new DiaDia(io,labirinto);
+		gioco.gioca();
+		}catch(FileNotFoundException  e) {
+			e.printStackTrace();
+		} catch (FormatoFileNonValidoException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -2,23 +2,15 @@ package it.uniroma3.diadia.comandi;
 
 import it.uniroma3.diadia.Partita;
 
-public class ComandoFine extends ComandoAstratto {
-
+public class ComandoFine extends AbstractComando {
+	
+	public ComandoFine() {
+		super("fine");
+	}
+	
 	@Override
 	public void esegui(Partita partita) {
-		partita.getIoConsole().mostraMessaggio("Grazie di aver giocato!");  // si desidera smettere
-		partita.setFinita();
+		partita.getIO().mostraMessaggio("Grazie di aver giocato!");
+		partita.setStatoPartita(false);
 	}
-
-
-	@Override
-	public String getNome() {
-		return "comandoFine";
-	}
-
-	@Override
-	public String getParametro() {
-		return null;
-	}
-
 }

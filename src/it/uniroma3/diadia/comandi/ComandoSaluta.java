@@ -1,25 +1,24 @@
 package it.uniroma3.diadia.comandi;
 
+import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
+import it.uniroma3.diadia.personaggi.AbstractPersonaggio;
 
-public class ComandoSaluta extends ComandoAstratto{
+public class ComandoSaluta extends AbstractComando {
+
+	public ComandoSaluta() {
+		super("saluta");
+	}
 
 	@Override
 	public void esegui(Partita partita) {
-		partita.getStanzaCorrente().getPersonaggio().saluta();
+		IO io = partita.getIO();
+		AbstractPersonaggio personaggio = partita.getGiocatore().getStanzaCorrente().getPersonaggio();
+		if(personaggio != null) {
+			io.mostraMessaggio(personaggio.saluta());
+		}else {
+			io.mostraMessaggio("Non c'è nessuno da salutare in questa stanza...");
+		}
 	}
-
-	@Override
-	public String getNome() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getParametro() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 }

@@ -1,58 +1,36 @@
 package it.uniroma3.diadia.attrezzi;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import it.uniroma3.diadia.giocatore.Borsa;
+import org.junit.Before;
+import org.junit.Test;
 
 public class AttrezzoTest {
-	public Attrezzo attrezzo1;
-	public Attrezzo attrezzo2;	
-	public Attrezzo attrezzo3;
-	public Attrezzo attrezzo4;
-	public Attrezzo attrezzo5;
-	public Set<Attrezzo> attrezzi;
-	public Borsa borsa;
 	
-
-
-	@BeforeEach
-	public void setUp() {
-		this.attrezzo1 = new Attrezzo("spada", 1);
-		this.attrezzo2 = new Attrezzo("spada", 2);
-		this.attrezzo3 = new Attrezzo("spada", 2);
-		this.attrezzo4 = new Attrezzo("mazza", 4);
-		this.attrezzo5 = new Attrezzo("penna", 3);
-		
-		this.attrezzi = new HashSet <Attrezzo> ();
-		this.borsa = new Borsa();
-	}
-		
-	@Test
-	public void TestAggiuntaConOggettiStessoNomeMaPesoDiverso() {
-		assertTrue(this.attrezzi.add(attrezzo1));
-		assertEquals(this.attrezzi.size(), 1);
-		
-		assertTrue(this.attrezzi.add(attrezzo2));
-		assertEquals(this.attrezzi.size(), 2);
+	private Attrezzo attrezzoTest1;
+	private Attrezzo attrezzoTest2;
+	
+	@Before
+	public void setUp()  {
+		attrezzoTest1 = new Attrezzo ("spada",1);
+		attrezzoTest2 = new Attrezzo ("spada",1);
 	}
 
 	@Test
-	public void TestAggiuntaConOggettiStessoNomeStessoPeso() {
-		assertTrue(this.attrezzi.add(attrezzo2));
-		assertEquals(this.attrezzi.size(), 1);
-		
-		assertFalse(this.attrezzi.add(attrezzo3));
-		assertEquals(this.attrezzi.size(), 1);
+	public void testEqualsObject() {
+		// uguaglianza basata sul nome, non sul riferimento o sul peso.
+		assertEquals(attrezzoTest1,attrezzoTest2);
 	}
-	
-
-
+	@Test
+	public void testArrayListContenenteAttrezziUguali() {
+		/*
+		 * la lista dichiara di contenere un certo attrezzo se gli 
+		 * viene passata una istanza di attrezzo diversa ma con nome uguale
+		 */
+		ArrayList<Attrezzo> lista = new ArrayList<Attrezzo>();
+		lista.add(attrezzoTest1);
+		assertTrue(lista.contains(attrezzoTest2));
+	}
 }

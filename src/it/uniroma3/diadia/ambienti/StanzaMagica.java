@@ -2,49 +2,49 @@ package it.uniroma3.diadia.ambienti;
 
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-class StanzaMagica extends Stanza {
-	final static private int SOGLIA_MAGICA_DEFAULT = 3;
+public class StanzaMagica extends Stanza{
+	/*
+	 * La stanza magica è una stanza che dopo un numero N di attrezzi posati in essa, attiva un suo comportamento magico.
+	 * Il comportamento della stanza magica inverte il nome e raddoppia il peso degli attrezzi posati.
+	 */
+	
+	// limiteNumeroAttrezzi è la quantità di attrezzi da posare affinchè la stanza magica venga attivata
+	static final int SOGLIA_MAGICA_DEFAULT = 2;
 	private int contatoreAttrezziPosati;
 	private int sogliaMagica;
-
-
+	
 	public StanzaMagica(String nome) {
-		this(nome, SOGLIA_MAGICA_DEFAULT);
+		this(nome,SOGLIA_MAGICA_DEFAULT);
 	}
-
-
-	public StanzaMagica(String nome, int soglia) {
+	
+	public StanzaMagica(String nome,int sogliaMagica) {
 		super(nome);
-		this.contatoreAttrezziPosati = 0;
-		this.sogliaMagica = soglia;
+		this.sogliaMagica=sogliaMagica;
+		this.contatoreAttrezziPosati=0;
 	}
-
-	@Override
-	public boolean addAttrezzo(Attrezzo attrezzo) {
-		this.contatoreAttrezziPosati++;
-		if (this.contatoreAttrezziPosati>this.sogliaMagica) {
-			attrezzo = this.modificaAttrezzo(attrezzo);
-		}
-		return super.addAttrezzo(attrezzo);
-	}
-	
-	/* non sono sicuro serva, riguardare le slide HW2
-	@Override
-	public boolean removeAttrezzo (Attrezzo attrezzo) {
-		if (this.contatoreAttrezziPosati > 0) {
-			this.contatoreAttrezziPosati--;
-		}
-		return super.removeAttrezzo(attrezzo);
-	} */
-	
 	
 	private Attrezzo modificaAttrezzo(Attrezzo attrezzo) {
 		StringBuilder nomeInvertito;
-		int pesoX2 = attrezzo.getPeso() * 2;
-		nomeInvertito = new StringBuilder(attrezzo.getNome());
-		nomeInvertito = nomeInvertito.reverse();
-		attrezzo = new Attrezzo(nomeInvertito.toString(), pesoX2);
+		int pesoX2 = attrezzo.getPeso()*2;
+		nomeInvertito= new StringBuilder(attrezzo.getNome());
+		nomeInvertito=nomeInvertito.reverse();
+		attrezzo = new Attrezzo(nomeInvertito.toString(),pesoX2);
 		return attrezzo;
 	}
-
+	
+	
+	// Metodo che dichiara che la stanza è magica (per testing)
+	public boolean isMagica() {
+		return true;
+	}
+	
+	@Override
+	public boolean addAttrezzo(Attrezzo attrezzo) {
+		this.contatoreAttrezziPosati++;
+		if(this.contatoreAttrezziPosati>sogliaMagica) {
+			attrezzo=this.modificaAttrezzo(attrezzo);
+		}
+		return super.addAttrezzo(attrezzo);
+    }
+	
 }
