@@ -4,9 +4,8 @@ import java.util.Scanner;
 
 import it.uniroma3.diadia.IO;
 
-public class FabbricaDiComandiFisarmonica implements FabbricaDiComandi {
+public class FabbricaDiComandiRiflessiva implements FabbricaDiComandi {
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public Comando costruisciComando(String istruzione , IO io) {
 		
